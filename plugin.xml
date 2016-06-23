@@ -12,12 +12,13 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>    
 
-    <js-module src="www/audiotoggle.js" name="AudioToggle">
-        <clobbers target="AudioToggle" />
-    </js-module>
 	
 
     <platform name="android">
+    	<js-module src="www/audiotoggle.js" name="AudioToggle">
+        	<clobbers target="AudioToggle" />
+    	</js-module>
+    	
         <source-file src="src/android/com/dooble/audiotoggle/AudioTogglePlugin.java" target-dir="src/com/dooble/audiotoggle" />
   
         <config-file target="res/xml/config.xml" parent="/*">
