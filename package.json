@@ -1,8 +1,8 @@
 {
     "version": "1.0.1",
-    "name": "cordova-audiotoggle",
-    "cordova_name": "cordova-audiotoggle",
-    "description": "cordova-audiotoggle",
+    "name": "com.dooble.audiotoggle",
+    "cordova_name": "com.dooble.audiotoggle",
+    "description": "com.dooble.audiotoggle",
     "author": "Philipp Seeser",
     "license": "MIT",
     "repository": {
