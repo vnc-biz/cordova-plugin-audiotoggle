@@ -1,0 +1,20 @@
+{
+    "version": "1.0.1",
+    "name": "cordova-audiotoggle",
+    "cordova_name": "cordova-audiotoggle",
+    "description": "cordova-audiotoggle",
+    "author": "Philipp Seeser",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sococo/audiotoggle.git"
+    },
+    "cordova": {
+        "id": "cordova-audiotoggle",
+        "platforms": [
+            "android",
+            "ios"
+        ]
+    },
+    
+}
