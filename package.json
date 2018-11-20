@@ -1,13 +1,13 @@
 {
-    "version": "1.0.1",
-    "name": "audiotoggle",
+    "version": "1.1.0",
+    "name": "audio-toggle",
     "cordova_name": "com.dooble.audiotoggle",
     "description": "com.dooble.audiotoggle",
     "author": "Philipp Seeser",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/sococo/audiotoggle.git"
+        "url": "git+https://github.com/abeimler/audio-toggle.git"
     },
     "cordova": {
         "id": "com.dooble.audiotoggle",
