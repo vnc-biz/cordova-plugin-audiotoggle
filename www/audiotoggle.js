@@ -8,3 +8,7 @@ exports.RINGTONE = 'ringtone';
 exports.setAudioMode = function (mode) {
 	cordova.exec(null, null, 'AudioTogglePlugin', 'setAudioMode', [mode]);
 };
+
+exports.on = function (eventName, callback) {
+   cordova.exec(callback, null, 'AudioTogglePlugin', 'registerListener', [eventName]);
+};
