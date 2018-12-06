@@ -1,7 +1,7 @@
 {
     "version": "1.1.0",
     "name": "audio-toggle",
-    "cordova_name": "com.nfonag.audiotoggle",
+    "cordova_name": "cordova-plugin-audiotoggle",
     "description": "com.nfonag.audiotoggle",
     "author": "Alex Beimler",
     "license": "MIT",
