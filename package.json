@@ -1,20 +1,16 @@
 {
-    "version": "1.0.1",
-    "name": "audiotoggle",
-    "cordova_name": "com.dooble.audiotoggle",
-    "description": "com.dooble.audiotoggle",
-    "author": "Philipp Seeser",
+    "version": "1.1.0",
+    "name": "audio-toggle",
+    "cordova_name": "com.nfonag.audiotoggle",
+    "description": "com.nfonag.audiotoggle",
+    "author": "Alex Beimler",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/sococo/audiotoggle.git"
+        "url": "git+https://github.com/abeimler/audio-toggle.git"
     },
-    "cordova": {
-        "id": "com.dooble.audiotoggle",
-        "platforms": [
-            "android",
-            "ios"
-        ]
-    },
-    
+    "platforms": [
+        "android",
+        "ios"
+    ]
 }
