@@ -18,10 +18,22 @@ exports.setSpeakerphoneOn = function (toggle) {
 	cordova.exec(null, null, 'AudioTogglePlugin', 'setSpeakerphoneOn', [toggle]);
 };
 
-exports.getOutputDevices = function (succ) {
-	cordova.exec(succ, null, 'AudioTogglePlugin', 'getOutputDevices', []);
+exports.getOutputDevices = function (callback) {
+	cordova.exec(callback, null, 'AudioTogglePlugin', 'getOutputDevices', []);
 };
 
 exports.on = function (eventName, callback) {
    cordova.exec(callback, null, 'AudioTogglePlugin', 'registerListener', [eventName]);
+};
+
+exports.getAudioMode = function (callback) {
+  cordova.exec(callback, null, 'AudioTogglePlugin', 'getAudioMode', []);
+};
+
+exports.isBluetoothScoOn = function (callback) {
+	cordova.exec(callback, null, 'AudioTogglePlugin', 'isBluetoothScoOn', []);
+};
+
+exports.isSpeakerphoneOn = function (callback) {
+	cordova.exec(callback, null, 'AudioTogglePlugin', 'isSpeakerphoneOn', []);
 };
