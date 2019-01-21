@@ -26,8 +26,6 @@ exports.on = function (eventName, callback) {
    cordova.exec(callback, null, 'AudioTogglePlugin', 'registerListener', [eventName]);
 };
 
-
-
 exports.getAudioMode = function (callback) {
   cordova.exec(callback, null, 'AudioTogglePlugin', 'getAudioMode', []);
 };
