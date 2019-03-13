@@ -10,6 +10,14 @@ exports.setAudioMode = function (mode) {
 	cordova.exec(null, null, 'AudioTogglePlugin', 'setAudioMode', [mode]);
 };
 
+exports.displayIOSAudioRoutingComponent = function () {
+  cordova.exec(null, null, 'AudioTogglePlugin', 'displayIOSAudioRoutingComponent');
+};
+
+exports.hasAudioRoutingOptions = function (callback) {
+  cordova.exec(callback, null, 'AudioTogglePlugin', 'checkAudioRoutingOptions');
+};
+
 exports.setBluetoothScoOn = function (toggle) {
 	cordova.exec(null, null, 'AudioTogglePlugin', 'setBluetoothScoOn', [toggle]);
 };
