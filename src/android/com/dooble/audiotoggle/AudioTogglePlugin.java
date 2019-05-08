@@ -22,6 +22,8 @@ public class AudioTogglePlugin extends CordovaPlugin {
   public static final String ACTION_GET_AUDIO_MODE = "getAudioMode";
   public static final String ACTION_IS_SPEAKER_ON = "isSpeakerphoneOn";
   public static final String ACTION_IS_BLUETOOTH_ON = "isBluetoothScoOn";
+  public static final String ACTION_HAS_EARPIECE = "hasBuiltInEarpiece";
+  public static final String ACTION_HAS_SPEAKER = "hasBuiltInSpeaker";
 
   @Override
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -50,10 +52,60 @@ public class AudioTogglePlugin extends CordovaPlugin {
     } else if (action.equals(ACTION_IS_BLUETOOTH_ON)) {
       callbackContext.success(isBluetoothScoOn().toString());
       return true;
+    } else if (action.equals(ACTION_HAS_EARPIECE)) {
+      callbackContext.success(hasBuiltInEarpiece().toString());
+      return true;
+    } else if (action.equals(ACTION_HAS_SPEAKER)) {
+      callbackContext.success(hasBuiltInSpeaker().toString());
+      return true;
     }
 
     callbackContext.error("Invalid action");
     return false;
+  }
+
+  public Boolean hasBuiltInEarpiece() {
+    final Context context = webView.getContext();
+    final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
+    try {
+      AudioDeviceInfo[] devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
+
+      JSONArray retdevs = new JSONArray();
+      for (AudioDeviceInfo dev : devices) {
+        if (dev.isSink()) {
+          if (dev.getType() == AudioDeviceInfo.TYPE_BUILTIN_EARPIECE) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public Boolean hasBuiltInSpeaker() {
+    final Context context = webView.getContext();
+    final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
+    try {
+      AudioDeviceInfo[] devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
+
+      JSONArray retdevs = new JSONArray();
+      for (AudioDeviceInfo dev : devices) {
+        if (dev.isSink()) {
+          if (dev.getType() == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    } catch (Exception e) {
+      return false;
+    }
   }
 
   public void setBluetoothScoOn(boolean on) {

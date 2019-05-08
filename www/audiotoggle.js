@@ -45,3 +45,11 @@ exports.isBluetoothScoOn = function (callback) {
 exports.isSpeakerphoneOn = function (callback) {
 	cordova.exec(callback, null, 'AudioTogglePlugin', 'isSpeakerphoneOn', []);
 };
+
+exports.hasBuiltInEarpiece = function(successCb, errorCb) {
+	cordova.exec(successCb, errorCb, 'AudioTogglePlugin', 'hasBuiltInEarpiece');
+};
+
+exports.hasBuiltInSpeaker = function(successCb, errorCb) {
+	cordova.exec(successCb, errorCb, 'AudioTogglePlugin', 'hasBuiltInSpeaker');
+};
