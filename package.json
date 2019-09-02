@@ -1,13 +1,13 @@
 {
     "version": "1.2.0",
-    "name": "audio-toggle",
+    "name": "cordova-plugin-audiotoggle",
     "cordova_name": "cordova-plugin-audiotoggle",
-    "description": "com.nfonag.audiotoggle",
+    "description": "cordova-plugin-audiotoggle",
     "author": "Alex Beimler",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/abeimler/audio-toggle.git"
+        "url": "git+https://github.com/neohelden/cordova-plugin-audiotoggle.git"
     },
     "platforms": [
         "android",
