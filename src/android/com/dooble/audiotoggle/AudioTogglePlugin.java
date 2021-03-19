@@ -28,11 +28,17 @@ public class AudioTogglePlugin extends CordovaPlugin {
   @Override
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
     if (action.equals(ACTION_SET_AUDIO_MODE)) {
-      if (!setAudioMode(args.getString(0))) {
-        callbackContext.error("Invalid audio mode");
-        return false;
-      }
-
+      this.cordova.getThreadPool().execute(new Runnable() {
+          @Override
+          public void run() {
+              String mode = args.getString(0);
+              if (!setAudioMode(mode)) {
+                  callbackContext.error("Invalid audio mode");
+              } else {
+                  callbackContext.success(mode);
+              }
+          }
+      });
       return true;
     } else if (action.equals(ACTION_SET_BLUETOOTH_ON)) {
       setBluetoothScoOn(args.getBoolean(0));
