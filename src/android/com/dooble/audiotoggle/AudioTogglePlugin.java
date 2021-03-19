@@ -31,12 +31,16 @@ public class AudioTogglePlugin extends CordovaPlugin {
       this.cordova.getThreadPool().execute(new Runnable() {
           @Override
           public void run() {
+            try {
               String mode = args.getString(0);
               if (!setAudioMode(mode)) {
                   callbackContext.error("Invalid audio mode");
               } else {
                   callbackContext.success(mode);
               }
+            } catch (JSONException e) {
+              callbackContext.error("Invalid parameter was sent to 'setAudioMode'");
+            }
           }
       });
       return true;
