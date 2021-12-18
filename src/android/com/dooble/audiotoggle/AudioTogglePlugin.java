@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.AudioDeviceInfo;
+import android.util.Log;
 import java.util.List;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AudioTogglePlugin extends CordovaPlugin {
+  private final String TAG = "AudioTogglePlugin";
   public static final String ACTION_SET_AUDIO_MODE = "setAudioMode";
   public static final String ACTION_SET_BLUETOOTH_ON = "setBluetoothScoOn";
   public static final String ACTION_SET_SPEAKER_ON = "setSpeakerphoneOn";
@@ -39,6 +41,7 @@ public class AudioTogglePlugin extends CordovaPlugin {
                   callbackContext.success(mode);
               }
             } catch (JSONException e) {
+              Log.d(TAG, "Invalid parameter was sent to setAudioMode: " + e.getMessage());
               callbackContext.error("Invalid parameter was sent to 'setAudioMode'");
             }
           }
@@ -92,6 +95,7 @@ public class AudioTogglePlugin extends CordovaPlugin {
 
       return false;
     } catch (Exception e) {
+      Log.d(TAG, "hasBuiltInEarpiece exception: " + e.getMessage());
       return false;
     }
   }
@@ -114,6 +118,7 @@ public class AudioTogglePlugin extends CordovaPlugin {
 
       return false;
     } catch (Exception e) {
+      Log.d(TAG, "hasBuiltInSpeaker exception: " + e.getMessage());
       return false;
     }
   }
@@ -193,6 +198,7 @@ public class AudioTogglePlugin extends CordovaPlugin {
       return new JSONObject().put("devices", retdevs);
     } catch (JSONException e) {
       // lets hope json-object keys are not null and not duplicated :)
+      Log.d(TAG, "getOutputDevices exception: " + e.getMessage());
     }
 
     return new JSONObject();
