@@ -146,18 +146,21 @@ public class AudioTogglePlugin extends CordovaPlugin {
     final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     AudioDeviceInfo speakerDevice = null;
     AudioDeviceInfo bluetoothDevice = null;
-    List<AudioDeviceInfo>  devices = audioManager.getAvailableCommunicationDevices();
-    for (AudioDeviceInfo device : devices) {
+    List<AudioDeviceInfo>  devices;
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+      devices = audioManager.getAvailableCommunicationDevices();
+      for (AudioDeviceInfo device : devices) {
         if (device.getType() == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER) {
-            speakerDevice = device;
-            break;
+          speakerDevice = device;
+          break;
         }
-    }
-    for (AudioDeviceInfo device : devices) {
+      }
+      for (AudioDeviceInfo device : devices) {
         if ((device.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO) || (device.getType() == AudioDeviceInfo.TYPE_TELEPHONY)) {
-            bluetoothDevice = device;
-            break;
+          bluetoothDevice = device;
+          break;
         }
+      }
     }
 
     if (mode.equals("bluetooth")) {
@@ -190,9 +193,9 @@ public class AudioTogglePlugin extends CordovaPlugin {
       return true;
     } else if (mode.equals("speaker")) {
       audioManager.setMode(AudioManager.MODE_NORMAL);
-      audioManager.clearCommunicationDevice();
       audioManager.setBluetoothScoOn(false);
       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+        audioManager.clearCommunicationDevice();
         if (speakerDevice != null) {
             // Turn speakerphone ON.
             boolean result = audioManager.setCommunicationDevice(speakerDevice);
