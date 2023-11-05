@@ -8,13 +8,16 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.AudioDeviceInfo;
 import java.util.List;
+import android.os.Build;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.util.Log;
 
 public class AudioTogglePlugin extends CordovaPlugin {
+  private static String TAG = "AudioTogglePlugin";
   public static final String ACTION_SET_AUDIO_MODE = "setAudioMode";
   public static final String ACTION_SET_BLUETOOTH_ON = "setBluetoothScoOn";
   public static final String ACTION_SET_SPEAKER_ON = "setSpeakerphoneOn";
@@ -138,26 +141,73 @@ public class AudioTogglePlugin extends CordovaPlugin {
   }
 
   public boolean setAudioMode(String mode) {
+    Log.d(TAG, "setAudioMode called: " + mode);
     final Context context = webView.getContext();
     final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+    AudioDeviceInfo speakerDevice = null;
+    AudioDeviceInfo bluetoothDevice = null;
+    List<AudioDeviceInfo>  devices;
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+      devices = audioManager.getAvailableCommunicationDevices();
+      for (AudioDeviceInfo device : devices) {
+        if (device.getType() == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER) {
+          speakerDevice = device;
+          break;
+        }
+      }
+      for (AudioDeviceInfo device : devices) {
+        if ((device.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO) || (device.getType() == AudioDeviceInfo.TYPE_TELEPHONY)) {
+          bluetoothDevice = device;
+          break;
+        }
+      }
+    }
 
     if (mode.equals("bluetooth")) {
       audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
       audioManager.setBluetoothScoOn(true);
-      audioManager.startBluetoothSco();
-      audioManager.setSpeakerphoneOn(false);
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+        audioManager.clearCommunicationDevice();
+        if (bluetoothDevice != null) {
+          boolean result2 = audioManager.setCommunicationDevice(bluetoothDevice);
+          if (!result2) {
+              // Handle error.
+              Log.d(TAG, "setAudioMode bluetooth failed");
+          }
+        }
+      } else {
+        audioManager.startBluetoothSco();
+        audioManager.setSpeakerphoneOn(false);
+      }
       return true;
     } else if (mode.equals("earpiece")) {
       audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-      audioManager.stopBluetoothSco();
       audioManager.setBluetoothScoOn(false);
-      audioManager.setSpeakerphoneOn(false);
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+        audioManager.clearCommunicationDevice();
+        Log.d(TAG, "setAudioMode cleared CommunicationDevice ");
+      } else {
+        audioManager.stopBluetoothSco();
+        audioManager.setSpeakerphoneOn(false);
+      }
       return true;
     } else if (mode.equals("speaker")) {
       audioManager.setMode(AudioManager.MODE_NORMAL);
-      audioManager.stopBluetoothSco();
       audioManager.setBluetoothScoOn(false);
-      audioManager.setSpeakerphoneOn(true);
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+        audioManager.clearCommunicationDevice();
+        if (speakerDevice != null) {
+            // Turn speakerphone ON.
+            boolean result = audioManager.setCommunicationDevice(speakerDevice);
+            if (!result) {
+                // Handle error.
+                Log.d(TAG, "setAudioMode setCommunicationDevice to speaker failed");
+            }
+        }
+      } else {
+        audioManager.stopBluetoothSco();
+        audioManager.setSpeakerphoneOn(true);
+      }
       return true;
     } else if (mode.equals("ringtone")) {
       audioManager.setMode(AudioManager.MODE_RINGTONE);
