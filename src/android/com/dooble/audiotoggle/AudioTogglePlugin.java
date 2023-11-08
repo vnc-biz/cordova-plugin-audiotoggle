@@ -164,6 +164,9 @@ public class AudioTogglePlugin extends CordovaPlugin {
     }
 
     if (mode.equals("bluetooth")) {
+      if (bluetoothDevice != null) {
+        Log.d(TAG, "setAudioMode bluetooth, device exitst " + bluetoothDevice.getProductName());
+      }
       audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
       audioManager.setBluetoothScoOn(true);
       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
@@ -173,7 +176,11 @@ public class AudioTogglePlugin extends CordovaPlugin {
           if (!result2) {
               // Handle error.
               Log.d(TAG, "setAudioMode bluetooth failed");
+          } else {
+            Log.d(TAG, "setAudio bluetooth done ");
           }
+        } else {
+          Log.d(TAG, "bluetooth requested, but no device?");
         }
       } else {
         audioManager.startBluetoothSco();
@@ -183,7 +190,7 @@ public class AudioTogglePlugin extends CordovaPlugin {
     } else if (mode.equals("earpiece")) {
       audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
       audioManager.setBluetoothScoOn(false);
-      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+      if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.TIRAMISU) {
         audioManager.clearCommunicationDevice();
         Log.d(TAG, "setAudioMode cleared CommunicationDevice ");
       } else {
@@ -202,6 +209,8 @@ public class AudioTogglePlugin extends CordovaPlugin {
             if (!result) {
                 // Handle error.
                 Log.d(TAG, "setAudioMode setCommunicationDevice to speaker failed");
+            } else {
+              Log.d(TAG, "setAudioMode setCommunicationDevice to speaker done");
             }
         }
       } else {
