@@ -145,6 +145,7 @@ public class AudioTogglePlugin extends CordovaPlugin {
     final Context context = webView.getContext();
     final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     AudioDeviceInfo speakerDevice = null;
+    AudioDeviceInfo earpieceDevice = null;
     AudioDeviceInfo bluetoothDevice = null;
     List<AudioDeviceInfo>  devices;
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
@@ -158,6 +159,12 @@ public class AudioTogglePlugin extends CordovaPlugin {
       for (AudioDeviceInfo device : devices) {
         if ((device.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO) || (device.getType() == AudioDeviceInfo.TYPE_TELEPHONY)) {
           bluetoothDevice = device;
+          break;
+        }
+      }
+      for (AudioDeviceInfo device : devices) {
+        if ((device.getType() == AudioDeviceInfo.TYPE_BUILTIN_EARPIECE)) {
+          earpieceDevice = device;
           break;
         }
       }
@@ -192,6 +199,15 @@ public class AudioTogglePlugin extends CordovaPlugin {
       audioManager.setBluetoothScoOn(false);
       if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.TIRAMISU) {
         audioManager.clearCommunicationDevice();
+        if (earpieceDevice != null) {
+          boolean result = audioManager.setCommunicationDevice(earpieceDevice);
+          if (!result) {
+              // Handle error.
+              Log.d(TAG, "setAudioMode setCommunicationDevice to earpiece failed");
+          } else {
+            Log.d(TAG, "setAudioMode setCommunicationDevice to earpiece done");
+          }
+        }
         Log.d(TAG, "setAudioMode cleared CommunicationDevice ");
       } else {
         audioManager.stopBluetoothSco();
