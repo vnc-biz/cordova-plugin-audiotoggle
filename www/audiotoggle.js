@@ -3,6 +3,7 @@ var exec = require('cordova/exec');
 exports.BLUETOOTH = 'bluetooth';
 exports.SPEAKER = 'speaker';
 exports.EARPIECE = 'earpiece';
+exports.WIRED = 'usbheadset';
 exports.NORMAL = 'normal';
 exports.RINGTONE = 'ringtone';
 

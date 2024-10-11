@@ -147,6 +147,7 @@ public class AudioTogglePlugin extends CordovaPlugin {
     AudioDeviceInfo speakerDevice = null;
     AudioDeviceInfo earpieceDevice = null;
     AudioDeviceInfo bluetoothDevice = null;
+    AudioDeviceInfo usbHeadsetDevice = null;
     List<AudioDeviceInfo>  devices;
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
       devices = audioManager.getAvailableCommunicationDevices();
@@ -165,6 +166,12 @@ public class AudioTogglePlugin extends CordovaPlugin {
       for (AudioDeviceInfo device : devices) {
         if ((device.getType() == AudioDeviceInfo.TYPE_BUILTIN_EARPIECE)) {
           earpieceDevice = device;
+          break;
+        }
+      }
+      for (AudioDeviceInfo device : devices) {
+        if ((device.getType() == AudioDeviceInfo.TYPE_USB_HEADSET)) {
+          usbHeadsetDevice = device;
           break;
         }
       }
@@ -232,6 +239,26 @@ public class AudioTogglePlugin extends CordovaPlugin {
       } else {
         audioManager.stopBluetoothSco();
         audioManager.setSpeakerphoneOn(true);
+      }
+      return true;
+    } else if (mode.equals("usbheadset")) {
+      audioManager.setMode(AudioManager.MODE_NORMAL);
+      audioManager.setBluetoothScoOn(false);
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+        audioManager.clearCommunicationDevice();
+        if (usbHeadsetDevice != null) {
+            // Turn speakerphone ON.
+            boolean result = audioManager.setCommunicationDevice(usbHeadsetDevice);
+            if (!result) {
+                // Handle error.
+                Log.d(TAG, "setAudioMode setCommunicationDevice to usbHeadsetDevice failed");
+            } else {
+              Log.d(TAG, "setAudioMode setCommunicationDevice to usbHeadsetDevice done");
+            }
+        }
+      } else {
+        audioManager.stopBluetoothSco();
+        audioManager.setSpeakerphoneOn(false);
       }
       return true;
     } else if (mode.equals("ringtone")) {
